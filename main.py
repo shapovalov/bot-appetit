@@ -4,6 +4,8 @@ import logging
 import random
 import urllib
 import urllib2
+import pickle
+import datetime
 
 # for sending images
 from PIL import Image
@@ -14,10 +16,16 @@ from google.appengine.api import urlfetch
 from google.appengine.ext import ndb
 import webapp2
 
-TOKEN = 'YOUR_BOT_TOKEN_HERE'
+#import arteclunch
+
+TOKEN_FILE = 'secret.token'
+with open(TOKEN_FILE, 'r') as myfile:
+    TOKEN=myfile.read().strip()
+assert len(TOKEN) == 45
 
 BASE_URL = 'https://api.telegram.org/bot' + TOKEN + '/'
 
+DB_PICKLE = "db.p"
 
 # ================================
 
@@ -126,10 +134,23 @@ class WebhookHandler(webapp2.RequestHandler):
         # CUSTOMIZE FROM HERE
 
         elif 'who are you' in text:
-            reply('telebot starter kit, created by yukuku: https://github.com/yukuku/telebot')
+            reply('I am you waiter!')
         elif 'what time' in text:
             reply('look at the top-right corner of your screen!')
         else:
+            with open(DB_PICKLE) as f:
+                lunch_db = pickle.load(f)
+            query = text.lower()
+            now = datetime.datetime.now()
+            wday = int(now.strftime("%w"))
+            if wday not in lunch_db:
+                reply(u"Today Kremlin is closed! Come back tomorrow.")
+            elif query not in lunch_db[wday]:
+                reply(u"Cannot find you in the DB, sorry!")
+            else:
+                reply(u"Today is " + now.strftime("%A") + u".\n" + u"\n".join(lunch_db[wday][query]))
+            return
+            # leave just in case
             if getEnabled(chat_id):
                 try:
                     resp1 = json.load(urllib2.urlopen('http://www.simsimi.com/requestChat?lc=en&ft=1.0&req=' + urllib.quote_plus(text.encode('utf-8'))))
