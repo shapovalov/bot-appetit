@@ -58,8 +58,9 @@ def get_order(ws, split_rows, day, col):
         if cell:
             course = ws.cell(row = row, column = COURSE_COL).value
             mass = ws.cell(row = row+1, column = 1).value
+            num_ord = ws.cell(row = row+1, column = COURSE_COL+1).value
             desc = u""
-            if not mass:
+            if not mass and not num_ord:
                 desc = ws.cell(row = row+1, column = COURSE_COL).value
                 if desc is None:
                     desc = u""
