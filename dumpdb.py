@@ -17,12 +17,13 @@ def make_person_string(order, name, verbose=False):
     return reply
 
 if __name__=="__main__":
-    if len(sys.argv) < 2:
-        print "Incorrect format: pass at least the xls and pickle filename."
+    if len(sys.argv) < 3:
+        print "Incorrect format: pass at least the xlsx and pickle filename."
         sys.exit()
 
     fname = sys.argv[1]
     fname_out = sys.argv[2]
+    motto = sys.argv[3] if len(sys.argv) >= 4 else u""
     wb = openpyxl.load_workbook(filename = fname, read_only=True)
     ws = wb.active
 
@@ -35,7 +36,7 @@ if __name__=="__main__":
     	for day in splits:
     		order = arteclunch.get_order(ws, splits, day, col)
     		reply = make_person_string(order, name.strip(), verbose=True)
-    		db[day][name.strip()] = reply
+    		db[day][name.strip()] = reply + [u"", motto]
 
     with open(fname_out, 'w') as f:
     	pickle.dump(db, f)
