@@ -7,7 +7,7 @@ import openpyxl
 
 MAX_COL = 100
 MAX_ROW = 300
-HEADER = 2
+HEADER = 3
 
 MAX_LHS_WIDTH = 3
 COURSE_COL = 2
