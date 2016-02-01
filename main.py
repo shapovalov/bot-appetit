@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+import sys
 import StringIO
 import json
 import logging
@@ -16,7 +18,8 @@ from google.appengine.api import urlfetch
 from google.appengine.ext import ndb
 import webapp2
 
-#import arteclunch
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 TOKEN_FILE = 'secret.token'
 with open(TOKEN_FILE, 'r') as myfile:
@@ -138,7 +141,7 @@ class WebhookHandler(webapp2.RequestHandler):
         elif 'what time' in text:
             reply('look at the top-right corner of your screen!')
         else:
-            with open(DB_PICKLE) as f:
+            with open(DB_PICKLE, 'rb') as f:
                 lunch_db = pickle.load(f)
             query = text.lower()
             now = datetime.datetime.now()

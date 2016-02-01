@@ -38,5 +38,5 @@ if __name__=="__main__":
     		reply = make_person_string(order, name.strip(), verbose=True)
     		db[day][name.strip()] = reply + [u"", motto]
 
-    with open(fname_out, 'w') as f:
+    with open(fname_out, 'wb') as f:
     	pickle.dump(db, f)
