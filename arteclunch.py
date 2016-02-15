@@ -6,7 +6,7 @@ import sys
 import openpyxl
 
 MAX_COL = 100
-MAX_ROW = 300
+MAX_ROW = 400
 HEADER = 3
 
 MAX_LHS_WIDTH = 3
@@ -14,7 +14,13 @@ COURSE_COL = 2
 FIRST_NAME_COL = 4
 WDAY_COL = 2
 
-WDAYS = {u"понедельник" : 1, u"вторник" : 2, u"среда" : 3, u"четверг" : 4, u"пятница" : 5}
+WDAYS = {u"воскресенье" : 0, 
+         u"понедельник" : 1,
+         u"вторник" : 2, 
+         u"среда" : 3, 
+         u"четверг" : 4, 
+         u"пятница" : 5,
+         u"суббота" : 6}
 
 def get_pers_columns(ws, name_query):
     pers_columns = {}
@@ -88,8 +94,8 @@ if __name__=="__main__":
     day = int(sys.argv[3])
     verbose = len(sys.argv) > 4 and sys.argv[4] == "-v"
 
-    if day not in xrange(1, 6):
-        print "Only working days (1--5) are currently supported."
+    if day not in xrange(0, 7):
+        print "Day number should be from 0 (Sun) to 6 (Sat)."
         sys.exit()
 
     wb = openpyxl.load_workbook(filename = fname, read_only=True)
